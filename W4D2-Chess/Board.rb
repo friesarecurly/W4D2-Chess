@@ -1,28 +1,29 @@
-
+require_relative "Pieces"
 
 class Board
-  
   attr_reader :board
+
+  NullPiece = nil
   
   def initialize
-    @board = Array.new(8) {Array.new(8)}
+    @board = Array.new(8) {Array.new(8, "X")}
     @null_piece = NullPiece
-    self.board_setup
+    board_setup
   end
   
-  def self.board_setup
+  def board_setup
     @board.each_with_index do |row, idx1|
       row.each_with_index do |sqr, idx2|
         pos = [idx1, idx2]
 
         if idx1 == 0 || idx1 == 1 
-          self.board[pos] = Piece.new(:white, self, pos)
+          self[pos] = Piece.new(:white, self, pos)
         elsif idx1 == 6 || idx1 == 7 
-          self.board[pos] = Piece.new(:black, self, pos????)
+          self[pos] = Piece.new(:black, self, pos)
         else
-          NullPiece
+          self[pos] = NullPiece
         end
-
+      end
     end
   end
 
@@ -37,20 +38,25 @@ class Board
   end
 
   def move_piece(color, start_pos, end_pos)
-    piece = @board[start_pos]
+    piece = self[start_pos]
     x, y = end_pos
 
     if color != piece.color || piece.nil?
       raise "Error, either wrong color or empty spot"
-    else !x.between(0,7) || !y.between(0,7)
+    elsif !x.between?(0,7) || !y.between?(0,7)
       raise "Error, position is off the board"
-      #need to test if position already has one of our pieces
+    # else #need to test if position already has one of our pieces
+    #   raise "Error, our piece is already there"
     end
+
+    self[start_pos] = NullPiece
+    self[end_pos] = piece
+    # piece[pos] = end_pos #updates pieces new position
 
   end
 
   def valid_pos?(pos)
-  end_pos
+  end
   
   def add_piece(piece, pos)
   end
