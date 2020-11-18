@@ -6,7 +6,7 @@ class Board
   NullPiece = nil
   
   def initialize
-    @board = Array.new(8) {Array.new(8, "X")}
+    @board = Array.new(8) {Array.new(8) {NullPiece.instance} }
     @null_piece = NullPiece
     board_setup
   end
@@ -59,6 +59,7 @@ class Board
   end
   
   def add_piece(piece, pos)
+    @grid[pos] = piece
   end
 
   def checkmate?(color)
